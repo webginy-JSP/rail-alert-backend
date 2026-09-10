@@ -1,0 +1,38 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model WatchCondition {
+  id         String   @id @default(cuid())
+  departure  String
+  arrival    String
+  date       String // YYYY-MM-DD
+  timeFrom   String // HH:mm
+  timeTo     String // HH:mm
+  trainType  String
+  seatClass  String
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  lastCheckedAt DateTime?
+  alerts     Alert[]
+}
+
+model Alert {
+  id          String         @id @default(cuid())
+  condition   WatchCondition @relation(fields: [conditionId], references: [id], onDelete: Cascade)
+  conditionId String
+  message     String
+  createdAt   DateTime       @default(now())
+}
+
+model DeviceToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  platform  String   @default("android")
+  createdAt DateTime @default(now())
+}

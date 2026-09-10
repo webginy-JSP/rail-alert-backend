@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: rail-alert-backend
+    runtime: node
+    plan: free
+    buildCommand: npm run render-build
+    startCommand: npm start
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: API_KEY
+        sync: false
+      - key: MONITOR_INTERVAL_SECONDS
+        value: "30"
+      - key: FIREBASE_SERVICE_ACCOUNT_PATH
+        value: ""
+      - key: NODE_ENV
+        value: production
